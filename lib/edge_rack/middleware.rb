@@ -72,7 +72,7 @@ module EdgeRack
 
     def render_edge_scripts
       <<-EOT
-        <script type="text/javascript" src="http://localhost:48626/edge.js" data-project="#{@options[:project_name]}"/>
+        <script type="text/javascript" src="http://localhost:48626/edge.js" data-project="#{@options[:project_name]}"></script>
       EOT
     end
   end
