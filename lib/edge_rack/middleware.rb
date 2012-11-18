@@ -1,3 +1,4 @@
+
 module EdgeRack
   class Middleware
     def initialize(app, options={})
@@ -9,13 +10,32 @@ module EdgeRack
         host: "http://localhost"
       }.merge(options)
 
+      @kind = "rack"
+
+      if defined?(Rails) 
+        @paths = {
+          css: Rails.application.config.assets[:paths],
+          sass: (Rails.application.config.sass[:load_paths] rescue []),
+          less: (Rails.application.config.less[:paths] rescue [])
+        }
+
+        @kind = "rails"
+      end
+
+      params = { 
+        project_path: @options[:project_path],
+        project_name: @options[:project_name],
+        project_kind: @kind
+      }
+
+      if defined?(Rails)
+        params[:load_paths] = ActiveSupport::JSON.encode(@paths)
+      end
+
       Thread.new do
         Net::HTTP.post_form(
           URI.parse('http://localhost:48626/project'),
-          { 
-            project_path: @options[:project_path],
-            project_name: @options[:project_name] 
-          }  
+          params
         )
       end
     end
