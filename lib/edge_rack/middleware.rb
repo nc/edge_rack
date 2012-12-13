@@ -32,12 +32,12 @@ module EdgeRack
         params[:load_paths] = ActiveSupport::JSON.encode(@paths)
       end
 
-      Thread.new do
-        Net::HTTP.post_form(
-          URI.parse('http://localhost:48626/project'),
-          params
-        )
-      end
+      # Thread.new do
+      #   Net::HTTP.post_form(
+      #     URI.parse('http://localhost:48626/project'),
+      #     params
+      #   )
+      # end
     end
 
     def call(env)
